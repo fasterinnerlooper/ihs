@@ -1,0 +1,9 @@
+<div class="container">
+  <div class="row">
+    <input class="form-control col-sm-2" placeholder="Symbol Lookup" [(ngModel)]="symbol"
+      (keydown.enter)="emitValue()" />
+    <button class="btn col-sm-1" (click)="emitValue()">
+      <fa-icon [icon]="faSearch"></fa-icon>
+    </button>
+  </div>
+</div>

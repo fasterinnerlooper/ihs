@@ -1,35 +1,38 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { APP_BASE_HREF } from '@angular/common';
+import { createComponentFactory, Spectator } from '@ngneat/spectator/jest';
 import { AppComponent } from './app.component';
+import { AppModule } from './app.module';
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
+  let spectator: Spectator<AppComponent>;
+  const createComponent = createComponentFactory({
+    component: AppComponent,
+    imports: [AppModule],
+    declareComponent: false,
+    providers: [
+      {
+        provide: APP_BASE_HREF,
+        useValue: '',
+      },
+    ],
   });
+  beforeEach(() => (spectator = createComponent()));
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(spectator.component).toBeTruthy();
   });
 
-  it(`should have as title 'ihs'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('ihs');
-  });
+  it('should only show the app ticker if a value has been submitted', () => {
+    // Arrange
+    expect(spectator.query('app-ticker')).not.toBeVisible();
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('ihs app is running!');
+    // Act
+    spectator.typeInElement('test', 'input');
+    spectator.click('button');
+    spectator.detectChanges();
+
+    // Assert
+    expect(spectator.component.symbol).toBeDefined();
+    expect(spectator.query('app-ticker')).toBeVisible();
   });
 });

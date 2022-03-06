@@ -1,0 +1,6 @@
+.row {
+  border-top: 1px solid lightgrey;
+}
+.row:last-child {
+  border-bottom: 1px solid lightgrey;
+}

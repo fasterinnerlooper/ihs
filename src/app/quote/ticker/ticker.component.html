@@ -1,0 +1,33 @@
+<div class="ml-4" *ngIf="quote!==undefined">
+  <hr />
+  <h6 id="symbol-name" class="text-uppercase text-muted">{{quote.Name}} ({{quote.Symbol}})</h6>
+  <div>
+    <h1 id="price" style="display:inline">{{quote.LastPrice | number}}</h1>
+    <h4 id="change" class="ml-2" [ngClass]="{'text-success':quote.Change>=0,'text-danger':quote.Change<0}"
+      style="text-decoration: solid;display:inline">
+      <span *ngIf="quote.Change > 0">+</span>{{quote.Change |
+      readableNumber}} (<span *ngIf="quote.ChangePercent > 0">+</span>{{quote.ChangePercent |
+      readableNumber}}%)
+    </h4>
+  </div>
+  <h6 id="date" class="text-muted">As of {{quote.Timestamp | date : 'shortTime'}} {{timezone}}</h6>
+  <table class="container">
+    <tr class="row">
+      <td class="col-6 text-muted">Range</td>
+      <td class="col-6" style="text-align: right;"><strong>{{quote.Low}} - {{quote.High}}</strong></td>
+    </tr>
+    <tr class="row">
+      <td class="col-6 text-muted">Open</td>
+      <td class="col-6" style="text-align: right;"><strong>{{quote.Open}}</strong></td>
+    </tr>
+    <tr class="row">
+      <td class="col-6 text-muted">Volume</td>
+      <td class="col-6" style="text-align: right;"><strong>{{quote.Volume | readableNumber}}</strong></td>
+    </tr>
+    <tr class="row">
+      <td class="col-6 text-muted">Market Cap</td>
+      <td class="col-6" style="text-align: right;"><strong>{{quote.MarketCap | readableNumber}}</strong></td>
+    </tr>
+  </table>
+</div>
+<div id="error" *ngIf="errorText">{{errorText}}</div>
